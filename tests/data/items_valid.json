@@ -1,0 +1,6 @@
+[
+  {"name": "delta", "description": "valid item delta"},
+  {"name": "epsilon", "description": "valid item epsilon"},
+  {"name": "zeta", "description": "valid item zeta"},
+  {"name": "x", "description": "single char is valid"}
+]
