@@ -33,7 +33,7 @@ This repo boots a FastAPI service backed by Postgres. It is the foundation for A
 - Allure attachments are added after each test by default. Set `ALLURE_ATTACH_ON_PASS=false` to attach only on failures.
 - You can attach custom artifacts in tests via `tests/utils/allure_helpers.py` (JSON, text, or files).
 - Smoke tests are marked with `@pytest.mark.smoke`. Run them with `pytest -m smoke`.
-- CI publishes the Allure report as a GitHub Actions artifact and (on `main`) deploys it to GitHub Pages.
+- CI publishes the Allure report as a GitHub Actions artifact and (on `master`) can deploy it to GitHub Pages.
 - Makefile shortcuts: `make venv`, `make install`, `make test`, `make smoke`.
 - Docker helpers: `make up`, `make down`, `make rebuild`.
 - If you have multiple Python versions installed, set the one to use like: `PYTHON=python3.11 make venv`.
@@ -46,6 +46,7 @@ This repo boots a FastAPI service backed by Postgres. It is the foundation for A
 - View Allure report locally (if opening `file://` is blank):
   - `python3 -m http.server 9000 --directory allure-report`
   - Open `http://localhost:9000`
+ - GitHub Pages deploy is optional. Set repo variable `PAGES_ENABLED=true` and enable Pages in repo settings to deploy from CI (branch `master`).
 
 ## Jenkins
 

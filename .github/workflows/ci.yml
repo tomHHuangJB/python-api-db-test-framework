@@ -106,15 +106,15 @@ jobs:
           path: perf/results_*.csv
 
       - name: Configure GitHub Pages
-        if: github.ref == 'refs/heads/main'
+        if: github.ref == 'refs/heads/master' && vars.PAGES_ENABLED == 'true'
         uses: actions/configure-pages@v5
 
       - name: Upload Allure report to Pages
-        if: github.ref == 'refs/heads/master'
+        if: github.ref == 'refs/heads/master' && vars.PAGES_ENABLED == 'true'
         uses: actions/upload-pages-artifact@v3
         with:
           path: allure-report
 
       - name: Deploy to GitHub Pages
-        if: github.ref == 'refs/heads/master'
+        if: github.ref == 'refs/heads/master' && vars.PAGES_ENABLED == 'true'
         uses: actions/deploy-pages@v4
