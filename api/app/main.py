@@ -35,7 +35,12 @@ def health():
     return {"status": "ok"}
 
 
-@app.post("/items", response_model=ItemOut, status_code=status.HTTP_201_CREATED, dependencies=[Depends(require_api_key)])
+@app.post(
+    "/items",
+    response_model=ItemOut,
+    status_code=status.HTTP_201_CREATED,
+    dependencies=[Depends(require_api_key)],
+)
 def create_item(item: ItemIn):
     with get_conn() as conn:
         with conn.cursor() as cur:
@@ -84,7 +89,11 @@ def update_item(item_id: int, item: ItemIn):
     return ItemOut(id=item_id, name=item.name, description=item.description)
 
 
-@app.delete("/items/{item_id}", status_code=status.HTTP_204_NO_CONTENT, dependencies=[Depends(require_api_key)])
+@app.delete(
+    "/items/{item_id}",
+    status_code=status.HTTP_204_NO_CONTENT,
+    dependencies=[Depends(require_api_key)],
+)
 def delete_item(item_id: int):
     with get_conn() as conn:
         with conn.cursor() as cur:

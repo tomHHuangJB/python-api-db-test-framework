@@ -11,4 +11,5 @@ build/
 .env
 allure-results/
 allure-report/
+perf/results_*.csv
 docs/

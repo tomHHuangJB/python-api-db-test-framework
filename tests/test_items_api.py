@@ -124,7 +124,10 @@ def test_api_and_db_counts_match(api_client, db):
 
 
 def test_delete_item_and_db_validation(api_client, db):
-    row = db.fetch_one("INSERT INTO items (name, description) VALUES (%s, %s) RETURNING id;", ("temp", "to delete"))
+    row = db.fetch_one(
+        "INSERT INTO items (name, description) VALUES (%s, %s) RETURNING id;",
+        ("temp", "to delete"),
+    )
     item_id = row[0]
 
     resp = api_client.delete_item(item_id)

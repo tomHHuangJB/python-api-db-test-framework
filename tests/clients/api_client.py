@@ -1,13 +1,15 @@
 import os
 
 import requests
+from requests import Response
 
 
 class ApiClient:
     def __init__(self, base_url: str | None = None, api_key: str | None = None):
-        self.base_url = (base_url or os.getenv("API_BASE_URL", "http://localhost:8000")).rstrip("/")
+        resolved_base_url = base_url or os.getenv("API_BASE_URL") or "http://localhost:8000"
+        self.base_url = resolved_base_url.rstrip("/")
         self.api_key = api_key or os.getenv("API_KEY", "local-dev-key")
-        self.last_response = None
+        self.last_response: Response | None = None
 
     def _headers(self):
         return {"X-API-Key": self.api_key}

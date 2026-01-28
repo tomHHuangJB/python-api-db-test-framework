@@ -2,7 +2,6 @@ import os
 
 from locust import HttpUser, between, task
 
-
 API_KEY = os.getenv("API_KEY", "local-dev-key")
 
 
@@ -20,4 +19,3 @@ class ApiUser(HttpUser):
     def create_item(self):
         payload = {"name": "perf-item", "description": "load"}
         self.client.post("/items", json=payload)
-

@@ -4,8 +4,8 @@ import os
 import allure
 import pytest
 
-from tests.clients.api_client import ApiClient
 from tests.clients import db_client
+from tests.clients.api_client import ApiClient
 
 
 @pytest.fixture(scope="session")
@@ -47,8 +47,16 @@ def _attach_api_response(api_client):
         "headers": dict(resp.headers or {}),
         "body": resp.text,
     }
-    allure.attach(json.dumps(request_payload, indent=2), "api_request.json", allure.attachment_type.JSON)
-    allure.attach(json.dumps(response_payload, indent=2), "api_response.json", allure.attachment_type.JSON)
+    allure.attach(
+        json.dumps(request_payload, indent=2),
+        "api_request.json",
+        allure.attachment_type.JSON,
+    )
+    allure.attach(
+        json.dumps(response_payload, indent=2),
+        "api_response.json",
+        allure.attachment_type.JSON,
+    )
 
 
 def _attach_db_query(db):
