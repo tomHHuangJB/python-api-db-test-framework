@@ -16,6 +16,19 @@ This repo boots a FastAPI service backed by Postgres. It is the foundation for A
    - `python -m pytest`
    - `python -m pytest -m smoke`
 
+## Features
+
+- FastAPI service with API-key auth and strict input validation
+- Postgres-backed CRUD with parameterized SQL
+- Connection pooling with connect/statement timeouts
+- Health checks, readiness probe, structured logs, and request IDs
+- Rate limiting and security headers
+- CORS configuration and OpenAPI API-key security scheme
+- Search and pagination (`limit`/`offset`)
+- Pytest framework with API + DB validation
+- BDD examples, data-driven tests, and Allure reporting
+- CI with smoke/full suites, lint/type checks, perf smoke
+
 ## Structure
 
 - `api/` FastAPI service
@@ -46,7 +59,11 @@ This repo boots a FastAPI service backed by Postgres. It is the foundation for A
 - View Allure report locally (if opening `file://` is blank):
   - `python3 -m http.server 9000 --directory allure-report`
   - Open `http://localhost:9000`
- - GitHub Pages deploy is optional. Set repo variable `PAGES_ENABLED=true` and enable Pages in repo settings to deploy from CI (branch `master`).
+- GitHub Pages deploy is optional. Set repo variable `PAGES_ENABLED=true` and enable Pages in repo settings to deploy from CI (branch `master`).
+- CI artifacts:
+  - `allure-results`: raw Allure data for regenerating reports
+  - `allure-report`: prebuilt HTML report (serve via `python3 -m http.server 9000 --directory allure-report`)
+  - `perf-results`: Locust CSVs (stats, failures, exceptions, history)
 
 ## Jenkins
 
@@ -102,3 +119,10 @@ Slack troubleshooting:
 - TDD workflow: `docs/TDD.md` + search endpoint example
 - Agile artifacts + traceability: `docs/AGILE.md`, `docs/TRACEABILITY.md`
 - Industry best practices: CI, Allure, smoke vs full, lint/type checks, perf smoke
+
+## Config highlights (env vars)
+
+- `RATE_LIMIT_PER_MINUTE`, `RATE_LIMIT_WINDOW_SECONDS`
+- `DB_CONNECT_TIMEOUT`, `DB_STATEMENT_TIMEOUT_MS`, `DB_POOL_MINCONN`, `DB_POOL_MAXCONN`
+- `LOG_LEVEL`, `REQUEST_ID_HEADER`
+- `CORS_ORIGINS` (comma-separated, e.g. `http://localhost:3000,https://example.com`)

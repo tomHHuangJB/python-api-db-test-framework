@@ -13,3 +13,4 @@ allure-results/
 allure-report/
 perf/results_*.csv
 docs/
+error.txt

@@ -137,6 +137,74 @@ def test_delete_item_and_db_validation(api_client, db):
     assert row is None
 
 
+def test_readiness_health(api_client):
+    resp = requests.get(f"{api_client.base_url}/health/ready", timeout=5)
+    assert resp.status_code == 200
+    payload = resp.json()
+    assert payload["status"] in ("ok", "degraded")
+    assert "db" in payload
+    assert "pool_ready" in payload
+
+
+def test_request_id_echoed(api_client):
+    request_id = "test-request-id-123"
+    resp = requests.get(
+        f"{api_client.base_url}/health",
+        headers={"X-Request-Id": request_id},
+        timeout=5,
+    )
+    assert resp.status_code == 200
+    assert resp.headers.get("X-Request-Id") == request_id
+
+
+def test_security_headers_present(api_client):
+    resp = requests.get(f"{api_client.base_url}/health", timeout=5)
+    assert resp.status_code == 200
+    assert resp.headers.get("X-Content-Type-Options") == "nosniff"
+    assert resp.headers.get("X-Frame-Options") == "DENY"
+    assert resp.headers.get("Referrer-Policy") == "no-referrer"
+    assert resp.headers.get("Cache-Control") == "no-store"
+
+
+def test_rate_limit_headers_present(api_client):
+    resp = api_client.list_items()
+    assert resp.status_code == 200
+    assert resp.headers.get("X-RateLimit-Limit") is not None
+    assert resp.headers.get("X-RateLimit-Remaining") is not None
+
+
+def test_list_items_pagination(api_client, cleanup_items):
+    first = api_client.create_item({"name": "pag-1", "description": "p1"})
+    second = api_client.create_item({"name": "pag-2", "description": "p2"})
+    assert first.status_code == 201
+    assert second.status_code == 201
+    cleanup_items.extend([first.json()["id"], second.json()["id"]])
+
+    resp = requests.get(
+        f"{api_client.base_url}/items",
+        params={"limit": 1, "offset": 0},
+        headers={"X-API-Key": api_client.api_key},
+        timeout=5,
+    )
+    assert resp.status_code == 200
+    assert len(resp.json()) == 1
+
+
+def test_search_pagination(api_client, cleanup_items):
+    created = api_client.create_item({"name": "pag-search-1", "description": "p1"})
+    assert created.status_code == 201
+    cleanup_items.append(created.json()["id"])
+
+    resp = requests.get(
+        f"{api_client.base_url}/items/search",
+        params={"name": "pag-search", "limit": 1, "offset": 0},
+        headers={"X-API-Key": api_client.api_key},
+        timeout=5,
+    )
+    assert resp.status_code == 200
+    assert len(resp.json()) <= 1
+
+
 def test_allure_custom_attachment_example():
     attach_json("sample_payload", {"name": "demo", "description": "custom attachment"})
     attach_text("sample_note", "This is an example of a custom attachment.")
