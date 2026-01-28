@@ -103,7 +103,10 @@ def given_item_for_update(api_client, cleanup_items, context):
 
 @when('I update the item with name "bdd-update" and description "after"')
 def when_update_item(api_client, context):
-    resp = api_client.update_item(context["item_id"], {"name": "bdd-update", "description": "after"})
+    resp = api_client.update_item(
+        context["item_id"],
+        {"name": "bdd-update", "description": "after"},
+    )
     assert resp.status_code == 200
 
 
