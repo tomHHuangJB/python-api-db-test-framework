@@ -1,4 +1,4 @@
-# Python API + Postgres Test Automation Playground
+# Python API + Postgres Test Automation Demo
 
 This repo boots a FastAPI service backed by Postgres. It is the foundation for API + SQL validation testing with pytest.
 
