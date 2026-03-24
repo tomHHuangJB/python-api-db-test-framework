@@ -1,4 +1,4 @@
-# Python API + Postgres Test Automation Playground
+# Python API + Postgres Test Automation Demo
 
 This repo boots a FastAPI service backed by Postgres. It is the foundation for API + SQL validation testing with pytest.
 
@@ -15,6 +15,19 @@ This repo boots a FastAPI service backed by Postgres. It is the foundation for A
 4. Run tests:
    - `python -m pytest`
    - `python -m pytest -m smoke`
+
+## Postman tests
+
+1. Start the API (from Quick start).
+2. Import the collection and environment:
+   - `postman_collection.json`
+   - `postman_environment.json` (sets `baseUrl`, `apiKey`, `itemId`)
+3. Select the **Python API Local** environment.
+4. Run folders as needed:
+   - **Smoke**: happy-path health + CRUD + search
+   - **Negative**: validation and injection-like cases
+   - **Security**: auth failures
+   - **Headers**: request ID echo
 
 ## Features
 
